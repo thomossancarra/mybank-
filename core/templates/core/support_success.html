@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>Support Request Submitted | MyBank</title>
+<link rel="stylesheet"
+      href="{% static 'core/style.css' %}">
+<style>
+    .success-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+    .success-card {
+        width: 100%;
+        max-width: 650px;
+        background: white;
+        border: 1px solid #e3e8f0;
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+    }
+    .success-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: #ecfdf5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+    }
+    .success-card h1 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 28px;
+    }
+    .success-card > p {
+        color: #64748b;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
+    .reference-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 25px;
+    }
+    .reference-label {
+        display: block;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    .reference-number {
+        color: #1769e0;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .status-box {
+        background: #eef4ff;
+        border-left: 4px solid #1769e0;
+        border-radius: 10px;
+        padding: 16px;
+        text-align: left;
+        margin-bottom: 25px;
+    }
+    .status-box strong {
+        color: #172033;
+    }
+    .status-box p {
+        margin: 7px 0 0;
+        color: #475569;
+        line-height: 1.6;
+    }
+    .success-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .success-actions a {
+        flex: 1;
+        min-width: 180px;
+        padding: 13px 20px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        box-sizing: border-box;
+    }
+    .dashboard-button {
+        background: #1769e0;
+        color: white;
+    }
+    .support-button {
+        background: #172033;
+        color: white;
+    }
+    .security-note {
+        margin-top: 25px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 10px;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+    @media (max-width: 600px) {
+        .success-card {
+            padding: 28px 20px;
+        }
+        .success-card h1 {
+            font-size: 24px;
+        }
+        .success-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a href="{% url 'dashboard' %}"
+           class="logo">
+            My<span>Bank</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+            <a href="{% url 'transfer' %}">
+                Transfer
+            </a>
+            <a href="{% url 'transactions' %}">
+                Transactions
+            </a>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </nav>
+    </div>
+</header>
+<main class="success-page">
+    <div class="success-card">
+        <div class="success-icon">
+            ✓
+        </div>
+        <h1>
+            Support Request Submitted
+        </h1>
+        <p>
+            Your support request has been successfully
+            received by the MyBank Support Team.
+        </p>
+        <div class="reference-box">
+            <span class="reference-label">
+                Support Reference Number
+            </span>
+            <div class="reference-number">
+                {{ reference_number }}
+            </div>
+        </div>
+        <div class="status-box">
+            <strong>
+                Request Status: Received
+            </strong>
+            <p>
+                Please keep your reference number for
+                future communication with the MyBank
+                Support Team.
+            </p>
+        </div>
+        <div class="success-actions">
+            <a href="{% url 'dashboard' %}"
+               class="dashboard-button">
+                Return to Dashboard
+            </a>
+            <a href="{% url 'support' %}"
+               class="support-button">
+                Contact Support Again
+            </a>
+        </div>
+        <div class="security-note">
+            🔒 For your security, MyBank Support will
+            never ask you to provide your password,
+            PIN or one-time verification code.
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,352 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+<style>
+    .fund-wrapper {
+        max-width: 760px;
+        margin: 30px auto;
+    }
+
+    .fund-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.07);
+    }
+
+    .fund-header {
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .fund-header h1 {
+        margin: 0 0 8px;
+        font-size: 25px;
+        color: #172033;
+    }
+
+    .fund-header p {
+        margin: 0;
+        color: #697386;
+        font-size: 14px;
+    }
+
+    .account-summary {
+        background: #f5f8fc;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 25px;
+    }
+
+    .account-summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 10px 0;
+        border-bottom: 1px solid #e7ebf1;
+    }
+
+    .account-summary-row:last-child {
+        border-bottom: none;
+    }
+
+    .account-summary-label {
+        color: #697386;
+    }
+
+    .account-summary-value {
+        color: #172033;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .form-row {
+        margin-bottom: 20px;
+    }
+
+    .form-row label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #25344d;
+    }
+
+    .form-row input,
+    .form-row select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #d7dde6;
+        border-radius: 9px;
+        font-size: 15px;
+        background: #fff;
+    }
+
+    .form-row input:focus,
+    .form-row select:focus {
+        outline: none;
+        border-color: #1769e0;
+        box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.10);
+    }
+
+    .help-text {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #7a8494;
+    }
+
+    .error-list {
+        color: #b42318;
+        margin: 6px 0 0;
+        padding-left: 18px;
+    }
+
+    .security-note {
+        margin-top: 20px;
+        padding: 15px 16px;
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .fund-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f4;
+    }
+
+    .fund-button {
+        border: none;
+        background: #1769e0;
+        color: white;
+        padding: 13px 22px;
+        border-radius: 9px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .fund-button:hover {
+        background: #1257bd;
+    }
+
+    .cancel-button {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 13px 20px;
+        border-radius: 9px;
+        background: #eef1f5;
+        color: #25344d;
+        font-weight: 600;
+    }
+
+    .cancel-button:hover {
+        background: #e2e6ec;
+    }
+
+    @media (max-width: 600px) {
+        .fund-wrapper {
+            margin: 15px auto;
+        }
+
+        .fund-card {
+            padding: 20px;
+        }
+
+        .account-summary-row {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .account-summary-value {
+            text-align: left;
+        }
+
+        .fund-actions {
+            flex-direction: column;
+        }
+
+        .fund-button,
+        .cancel-button {
+            width: 100%;
+            justify-content: center;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="fund-wrapper">
+
+    <div class="fund-card">
+
+        <div class="fund-header">
+            <h1>Fund Customer Account</h1>
+
+            <p>
+                Credit funds directly to the selected MyBank account.
+            </p>
+        </div>
+
+
+        <div class="account-summary">
+
+            <div class="account-summary-row">
+
+                <span class="account-summary-label">
+                    Account Holder
+                </span>
+
+                <span class="account-summary-value">
+                    {{ account.user.get_full_name|default:account.user.username }}
+                </span>
+
+            </div>
+
+
+            <div class="account-summary-row">
+
+                <span class="account-summary-label">
+                    Account Number
+                </span>
+
+                <span class="account-summary-value">
+                    {{ account.account_number }}
+                </span>
+
+            </div>
+
+
+            <div class="account-summary-row">
+
+                <span class="account-summary-label">
+                    Registered Email
+                </span>
+
+                <span class="account-summary-value">
+                    {{ account.user.email }}
+                </span>
+
+            </div>
+
+
+            <div class="account-summary-row">
+
+                <span class="account-summary-label">
+                    Current Balance
+                </span>
+
+                <span class="account-summary-value">
+                    ${{ account.balance|floatformat:2 }}
+                    {{ account.currency }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <form method="post">
+
+    {% csrf_token %}
+
+    <input type="hidden" name="action" value="fund_account">
+
+    <input
+        type="hidden"
+        name="_selected_action"
+        value="{{ account.pk }}"
+    >
+
+
+            {% for field in form %}
+
+                <div class="form-row">
+
+                    {{ field.label_tag }}
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+
+                        <div class="help-text">
+                            {{ field.help_text }}
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if field.errors %}
+
+                        <ul class="error-list">
+
+                            {% for error in field.errors %}
+
+                                <li>
+                                    {{ error }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="security-note">
+
+                <strong>Account Credit Notice</strong><br>
+
+                The payment description entered above will appear
+                in the customer's transaction history and credit
+                notification.
+
+                A unique transaction reference will be generated
+                automatically.
+
+            </div>
+
+
+            <div class="fund-actions">
+
+                <a
+                    href="{% url 'admin:core_account_changelist' %}"
+                    class="cancel-button"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    name="apply"
+                    class="fund-button"
+                >
+                    Confirm Account Credit
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

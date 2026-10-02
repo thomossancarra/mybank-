@@ -1,0 +1,225 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% trans "Create Account - MyBank" %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                My<span>Bank</span>
+            </div>
+
+            <h1>{% trans "Create Account" %}</h1>
+
+            <p class="auth-subtitle">
+                {% trans "Open your MyBank account today." %}
+            </p>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+
+<div class="form-group">
+    <label for="{{ form.first_name.id_for_label }}">{% trans "First Name" %}</label>
+    {{ form.first_name }}
+
+    {% if form.first_name.errors %}
+        <div class="form-error">
+            {{ form.first_name.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.middle_name.id_for_label }}">{% trans "Middle Name" %}</label>
+    {{ form.middle_name }}
+
+    {% if form.middle_name.errors %}
+        <div class="form-error">
+            {{ form.middle_name.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.last_name.id_for_label }}">{% trans "Surname" %}</label>
+    {{ form.last_name }}
+
+    {% if form.last_name.errors %}
+        <div class="form-error">
+            {{ form.last_name.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.phone_number.id_for_label }}">{% trans "Phone Number" %}</label>
+    {{ form.phone_number }}
+
+    {% if form.phone_number.errors %}
+        <div class="form-error">
+            {{ form.phone_number.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.email.id_for_label }}">{% trans "Email" %}</label>
+    {{ form.email }}
+
+    {% if form.email.errors %}
+        <div class="form-error">
+            {{ form.email.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.password1.id_for_label }}">{% trans "Password" %}</label>
+    {{ form.password1 }}
+
+    {% if form.password1.errors %}
+        <div class="form-error">
+            {{ form.password1.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.password2.id_for_label }}">{% trans "Confirm Password" %}</label>
+    {{ form.password2 }}
+
+    {% if form.password2.errors %}
+        <div class="form-error">
+            {{ form.password2.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.country.id_for_label }}">{% trans "Country" %}</label>
+    {{ form.country }}
+
+    {% if form.country.errors %}
+        <div class="form-error">
+            {{ form.country.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.state.id_for_label }}" id="state-label">
+        {% trans "State / Province / Region" %}
+    </label>
+
+    {{ form.state }}
+
+    {% if form.state.errors %}
+        <div class="form-error">
+            {{ form.state.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.address.id_for_label }}">{% trans "Residential Address" %}</label>
+
+    {{ form.address }}
+
+    {% if form.address.errors %}
+        <div class="form-error">
+            {{ form.address.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.account_type.id_for_label }}">{% trans "Account Type" %}</label>
+
+    {{ form.account_type }}
+
+    {% if form.account_type.errors %}
+        <div class="form-error">
+            {{ form.account_type.errors }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.profile_photo.id_for_label }}">
+        {% trans "Profile Photo / Passport" %}
+    </label>
+
+    <small class="form-help">
+        {% trans "Upload a clear photo or passport image." %}
+    </small>
+
+    {{ form.profile_photo }}
+
+    {% if form.profile_photo.errors %}
+        <div class="form-error">
+            {{ form.profile_photo.errors }}
+        </div>
+    {% endif %}
+</div>
+
+                <button type="submit" class="btn auth-button">
+                    {% trans "Submit Application" %}
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                {% trans "Already have an account?" %}
+                <a href="{% url 'login' %}">{% trans "Login" %}</a>
+            </p>
+
+        </div>
+
+    </main>
+
+    <script>
+    const countryField = document.getElementById("id_country");
+    const stateLabel = document.getElementById("state-label");
+
+    function updateStateLabel() {
+        const country = countryField.value;
+
+        if (country === "US") {
+            stateLabel.textContent = "State";
+        } else if (country === "CA") {
+            stateLabel.textContent = "Province";
+        } else if (country === "GB") {
+            stateLabel.textContent = "County / Region";
+        } else if (country === "AU") {
+            stateLabel.textContent = "State / Territory";
+        } else if (country === "BR" || country === "MX") {
+            stateLabel.textContent = "State";
+        } else {
+            stateLabel.textContent = "State / Province / Region";
+        }
+    }
+
+    countryField.addEventListener("change", updateStateLabel);
+    updateStateLabel();
+</script>
+
+</body>
+</html> 

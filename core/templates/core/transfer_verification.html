@@ -1,0 +1,229 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>Transfer Verification | MyBank</title>
+<link rel="stylesheet"
+      href="{% static 'core/style.css' %}">
+<style>
+    .verification-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+    .verification-card {
+        width: 100%;
+        max-width: 650px;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+    }
+    .verification-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .verification-icon-large {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: #fff1f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+    .verification-header h1 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 28px;
+    }
+    .verification-header p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    .pending-notice {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        border-left: 5px solid #dc2626;
+        border-radius: 12px;
+        padding: 22px;
+        margin-bottom: 25px;
+    }
+    .pending-notice h2 {
+        margin: 0 0 12px;
+        color: #b91c1c;
+        font-size: 20px;
+    }
+    .pending-notice p {
+        margin: 8px 0;
+        color: #7f1d1d;
+        line-height: 1.7;
+        font-size: 15px;
+    }
+    .transfer-summary {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    .transfer-summary p {
+        margin: 8px 0;
+        color: #475569;
+    }
+    .transfer-summary strong {
+        color: #172033;
+    }
+    .security-note {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 16px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+    .verification-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .dashboard-button,
+    .support-button {
+        flex: 1;
+        min-width: 180px;
+        text-align: center;
+        padding: 13px 20px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        box-sizing: border-box;
+    }
+    .dashboard-button {
+        background: #1769e0;
+        color: white;
+    }
+    .support-button {
+        background: #172033;
+        color: white;
+    }
+    @media (max-width: 600px) {
+        .verification-card {
+            padding: 25px 20px;
+        }
+        .verification-header h1 {
+            font-size: 24px;
+        }
+        .verification-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- NAVIGATION -->
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a href="{% url 'dashboard' %}" class="logo">
+            My<span>Bank</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+            <a href="{% url 'transfer' %}">
+                Transfer
+            </a>
+            <a href="{% url 'transactions' %}">
+                Transactions
+            </a>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </nav>
+    </div>
+</header>
+<!-- VERIFICATION PAGE -->
+<main class="verification-page">
+    <div class="verification-card">
+        <!-- HEADER -->
+        <div class="verification-header">
+            <div class="verification-icon-large">
+                ⚠️
+            </div>
+            <h1>
+                Transfer Verification
+            </h1>
+            <p>
+                Your transfer request has been received
+                and is currently awaiting verification.
+            </p>
+        </div>
+        <!-- RED NOTICE -->
+        <div class="pending-notice">
+            <h2>
+                Verification Code Pending
+            </h2>
+            <p>
+                Your transfer authorization code is currently
+                pending due to the country or regional
+                requirements associated with this payment.
+            </p>
+            <p>
+                Please contact the MyBank Support Team for
+                assistance with completing the required
+                verification process before this transfer
+                can be authorized.
+            </p>
+            <p>
+                <strong>
+                    This transfer has not been completed.
+                </strong>
+            </p>
+        </div>
+        <!-- TRANSFER SUMMARY -->
+        <div class="transfer-summary">
+            <p>
+                <strong>Transfer Type:</strong>
+                {{ transfer_type }}
+            </p>
+            <p>
+                <strong>Status:</strong>
+                Verification Pending
+            </p>
+        </div>
+        <!-- SECURITY MESSAGE -->
+        <div class="security-note">
+            <strong>Account Security:</strong>
+            No funds have been deducted from your MyBank
+            account. Your available balance remains unchanged
+            until the required verification has been completed
+            and the payment is authorized.
+        </div>
+        <!-- ACTION BUTTONS -->
+        <div class="verification-actions">
+            <a href="{% url 'dashboard' %}"
+               class="dashboard-button">
+                Return to Dashboard
+            </a>
+            <a href="{% url 'support' %}"
+               class="support-button">
+
+                Contact MyBank Support
+
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

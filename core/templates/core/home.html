@@ -1,0 +1,1019 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ system_settings.bank_name }} | Modern Digital Banking</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #10233f;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 76px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            color: #0d2342;
+        }
+
+        .logo span {
+            color: #1769e0;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .translator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.translator-icon {
+    font-size: 17px;
+}
+
+.translator form {
+    margin: 0;
+}
+
+.translator select {
+    border: 1px solid #dce3ed;
+    background: white;
+    color: #26364d;
+    padding: 7px 28px 7px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.translator select:focus {
+    border-color: #1769e0;
+}
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #20a464;
+            border-radius: 50%;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            min-height: calc(100vh - 76px);
+            padding: 70px 7%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+
+            background:
+                radial-gradient(circle at 80% 20%, rgba(23,105,224,0.12), transparent 35%),
+                linear-gradient(135deg, #f7f9fc 0%, #eef4fb 100%);
+        }
+
+
+        /* LEFT SIDE */
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 13px;
+            background: #eaf2ff;
+            color: #1769e0;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 25px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            background: #1769e0;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: clamp(46px, 5vw, 72px);
+            line-height: 1.02;
+            letter-spacing: -3px;
+            color: #0b1f3a;
+            margin-bottom: 25px;
+        }
+
+        h1 span {
+            color: #1769e0;
+        }
+
+        .hero-text {
+            max-width: 540px;
+            color: #667085;
+            font-size: 18px;
+            line-height: 1.75;
+            margin-bottom: 34px;
+        }
+
+
+        /* BUTTONS */
+
+        .buttons {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 34px;
+        }
+
+        .button {
+            text-decoration: none;
+            padding: 15px 26px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .primary {
+            background: #1769e0;
+            color: white;
+            box-shadow: 0 8px 20px rgba(23, 105, 224, 0.22);
+        }
+
+        .primary:hover {
+            background: #0f5bc9;
+            transform: translateY(-2px);
+        }
+
+        .secondary {
+            background: white;
+            color: #10233f;
+            border: 1px solid #dce3ed;
+        }
+
+        .secondary:hover {
+            border-color: #1769e0;
+            color: #1769e0;
+        }
+
+
+        /* TRUST */
+
+        .trust {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .check {
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background: #e7f7ef;
+            color: #159957;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* BANKING PREVIEW */
+
+        .preview {
+            position: relative;
+            min-height: 510px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard {
+            width: min(470px, 100%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow:
+                0 30px 70px rgba(15, 35, 66, 0.14),
+                0 5px 15px rgba(15, 35, 66, 0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* DASHBOARD TOP */
+
+        .dashboard-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 14px;
+            color: #667085;
+        }
+
+        .dashboard-logo {
+            font-size: 17px;
+            font-weight: 800;
+            color: #0d2342;
+        }
+
+
+        /* BALANCE */
+
+        .balance-card {
+            background: linear-gradient(135deg, #0b2345, #1769e0);
+            border-radius: 18px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 9px;
+        }
+
+        .balance {
+            font-size: 34px;
+            font-weight: 750;
+            letter-spacing: -1px;
+            margin-bottom: 17px;
+        }
+
+        .account-number {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+
+        /* DASHBOARD ACTIVITY */
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .activity-header strong {
+            font-size: 15px;
+            color: #10233f;
+        }
+
+        .activity-header span {
+            font-size: 11px;
+            color: #1769e0;
+            font-weight: 700;
+        }
+
+        .transaction {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #eef1f5;
+        }
+
+        .transaction:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .transaction-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background: #eef4ff;
+            color: #1769e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .transaction-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #26364d;
+        }
+
+        .transaction-date {
+            font-size: 10px;
+            color: #98a2b3;
+            margin-top: 3px;
+        }
+
+        .positive {
+            color: #159957;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .negative {
+            color: #d64545;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* SMALL SECURITY BADGE */
+
+        .security-badge {
+            position: absolute;
+            right: -20px;
+            bottom: 55px;
+
+            background: white;
+            padding: 13px 17px;
+            border-radius: 13px;
+
+            box-shadow: 0 15px 35px rgba(15, 35, 66, 0.12);
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-size: 12px;
+            font-weight: 700;
+            color: #26364d;
+        }
+
+        .security-icon {
+            width: 27px;
+            height: 27px;
+            background: #e7f7ef;
+            color: #159957;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* SMALL CHART */
+
+        .chart-card {
+            position: absolute;
+            left: -25px;
+            bottom: 25px;
+
+            width: 145px;
+            background: white;
+            padding: 15px;
+
+            border-radius: 14px;
+
+            box-shadow: 0 15px 35px rgba(15, 35, 66, 0.10);
+            z-index: 3;
+        }
+
+        .chart-title {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #98a2b3;
+            margin-bottom: 10px;
+        }
+
+        .chart-title strong {
+            color: #10233f;
+            font-size: 12px;
+        }
+
+        .bars {
+            height: 45px;
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .bars span {
+            flex: 1;
+            background: #1769e0;
+            border-radius: 3px 3px 1px 1px;
+        }
+
+        .bars span:nth-child(1) { height: 30%; }
+        .bars span:nth-child(2) { height: 45%; }
+        .bars span:nth-child(3) { height: 38%; }
+        .bars span:nth-child(4) { height: 60%; }
+        .bars span:nth-child(5) { height: 78%; }
+        .bars span:nth-child(6) { height: 95%; }
+
+
+        /* BOTTOM FEATURES */
+
+        .features {
+            padding: 75px 7%;
+            background: white;
+        }
+
+        .features-title {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 45px;
+        }
+
+        .features-title h2 {
+            font-size: 34px;
+            color: #0b1f3a;
+            margin-bottom: 12px;
+        }
+
+        .features-title p {
+            color: #667085;
+            line-height: 1.7;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .feature {
+            padding: 27px;
+            border: 1px solid #edf0f5;
+            border-radius: 16px;
+            background: #fbfcfe;
+        }
+
+        .feature-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #eaf2ff;
+            color: #1769e0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+            margin-bottom: 17px;
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 9px;
+            color: #10233f;
+        }
+
+        .feature p {
+            color: #667085;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* TABLET */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 55px;
+                gap: 30px;
+            }
+
+            .hero-content {
+                max-width: 700px;
+            }
+
+            .preview {
+                min-height: 470px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+        }
+
+
+        /* PHONE */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 68px;
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-right {
+                font-size: 11px;
+            }
+
+            .hero {
+                padding: 45px 20px 55px;
+                gap: 25px;
+            }
+
+            h1 {
+                font-size: 46px;
+                letter-spacing: -2px;
+            }
+
+            .hero-text {
+                font-size: 16px;
+                line-height: 1.65;
+            }
+
+            .buttons {
+                width: 100%;
+                gap: 10px;
+            }
+
+            .button {
+                flex: 1;
+                text-align: center;
+                padding: 15px 12px;
+            }
+
+            .trust {
+                gap: 14px;
+            }
+
+            .preview {
+                min-height: 470px;
+                width: 100%;
+            }
+
+            .dashboard {
+                width: 100%;
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .balance {
+                font-size: 30px;
+            }
+
+            .security-badge {
+                right: 5px;
+                bottom: 25px;
+            }
+
+            .chart-card {
+                left: -5px;
+                bottom: 5px;
+            }
+
+            .features {
+                padding: 55px 20px;
+            }
+
+            .features-title h2 {
+                font-size: 28px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            My<span>Bank</span>
+        </div>
+
+        <div class="nav-right">
+
+            <div class="translator">
+
+                <span class="translator-icon">🌐</span>
+
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+
+                    <select
+                        name="language"
+                        onchange="this.form.submit()"
+                        aria-label="{% trans 'Select language' %}"
+                    >
+
+                        {% get_current_language as CURRENT_LANGUAGE %}
+                        {% get_available_languages as AVAILABLE_LANGUAGES %}
+
+                        {% for language_code, language_name in AVAILABLE_LANGUAGES %}
+
+                            <option
+                                value="{{ language_code }}"
+                                {% if language_code == CURRENT_LANGUAGE %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ language_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ request.path }}"
+                    >
+
+                </form>
+
+                <div class="status-dot"></div>
+
+                <span>{% trans "Secure Online Banking" %}</span>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <div class="eyebrow-dot"></div>
+                {% trans "Modern digital banking" %}
+            </div>
+
+            <h1>
+                {% trans "Banking made" %}
+                <span>{% trans "simple." %}</span>
+            </h1>
+
+            <p class="hero-text">
+                {% trans "Welcome to MyBank — a modern online banking experience designed to help you manage your money, accounts and everyday banking from one secure place." %}
+            </p>
+
+
+            <div class="buttons">
+
+                <a href="{% url 'register' %}" class="btn primary">
+                    {% trans "Get Started" %}
+                </a>
+
+                <a href="{% url 'login' %}" class="btn secondary">
+                    {% trans "Login" %}
+                </a>
+
+            </div>
+
+
+            <div class="trust">
+
+                <div class="trust-item">
+                    <div class="check">✓</div>
+                    {% trans "Secure" %}
+                </div>
+
+                <div class="trust-item">
+                    <div class="check">✓</div>
+                    {% trans "Fast" %}
+                </div>
+
+                <div class="trust-item">
+                    <div class="check">✓</div>
+                    {% trans "Accessible" %}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BANKING PREVIEW -->
+
+        <div class="preview">
+
+            <div class="dashboard">
+
+                <div class="dashboard-top">
+
+                    <div>
+                        <div class="dashboard-title">
+                            {% trans "Welcome back" %}
+                        </div>
+
+                        <div class="dashboard-logo">
+                            {{ system_settings.bank_name }}
+                        </div>
+                    </div>
+
+                    <div class="dashboard-title">
+                        ● {% trans "Online" %}
+                    </div>
+
+                </div>
+
+
+                <!-- BALANCE -->
+
+                <div class="balance-card">
+
+                    <div class="balance-label">
+                        {% trans "Available Balance" %}
+                    </div>
+
+                    <div class="balance">
+                        $24,850.00
+                    </div>
+
+                    <div class="account-number">
+                        {% trans "Account" %} •••• 4821
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVITY -->
+
+                <div class="activity-header">
+
+                    <strong>
+                        {% trans "Recent Activity" %}
+                    </strong>
+
+                    <span>
+                        {% trans "View all" %}
+                    </span>
+
+                </div>
+
+
+                <div class="transaction">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            ↓
+                        </div>
+
+                        <div>
+                            <div class="transaction-name">
+                                {% trans "Transfer Received" %}
+                            </div>
+
+                            <div class="transaction-date">
+                                {% trans "Today" %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="positive">
+                        +$1,200
+                    </div>
+
+                </div>
+
+
+                <div class="transaction">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            $
+                        </div>
+
+                        <div>
+                            <div class="transaction-name">
+                                {% trans "Card Payment" %}
+                            </div>
+
+                            <div class="transaction-date">
+                                {% trans "Yesterday" %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="negative">
+                        -$85
+                    </div>
+
+                </div>
+
+
+                <div class="transaction">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            +
+                        </div>
+
+                        <div>
+                            <div class="transaction-name">
+                                {% trans "Deposit" %}
+                            </div>
+
+                            <div class="transaction-date">
+                                {% trans "Sep 24" %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="positive">
+                        +$2,500
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHART -->
+
+            <div class="chart-card">
+
+                <div class="chart-title">
+                    <span>{% trans "Balance" %}</span>
+                    <strong>$24.8K</strong>
+                </div>
+
+                <div class="bars">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY -->
+
+            <div class="security-badge">
+
+                <div class="security-icon">
+                    ✓
+                </div>
+
+                {% trans "Secure Banking" %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section class="features">
+
+        <div class="features-title">
+
+            <h2>
+                {% trans "Everything you need in one place" %}
+            </h2>
+
+            <p>
+                {% trans "Manage your account, move money and keep track of your banking activity through one simple experience." %}
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    $
+                </div>
+
+                <h3>
+                    {% trans "Manage Your Account" %}
+                </h3>
+
+                <p>
+                    {% trans "Keep your account information and banking activity organized in one secure place." %}
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    →
+                </div>
+
+                <h3>
+                    {% trans "Easy Transfers" %}
+                </h3>
+
+                <p>
+                    {% trans "Send money between accounts through a simple and convenient transfer experience." %}
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    {% trans "Security First" %}
+                </h3>
+
+                <p>
+                    {% trans "Your banking experience is designed with account security and privacy in mind." %}
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</body>
+</html>

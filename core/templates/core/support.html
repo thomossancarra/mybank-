@@ -1,0 +1,311 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>{{ system_settings.bank_name }} Support</title>
+<link rel="stylesheet"
+      href="{% static 'core/style.css' %}">
+<style>
+    .support-page {
+        min-height: 80vh;
+        padding: 50px 20px;
+    }
+    .support-wrapper {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+    .support-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+    .support-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        background: #eef4ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+    .support-header h1 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 32px;
+    }
+    .support-header p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    .support-card {
+        background: white;
+        border: 1px solid #e3e8f0;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.07);
+    }
+    .support-card h2 {
+        margin-top: 0;
+        color: #172033;
+        font-size: 22px;
+    }
+    .support-card > p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+    .support-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 25px 0;
+    }
+    .support-info-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+    }
+    .support-info-box span {
+        display: block;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+    .support-info-box strong {
+        color: #172033;
+        font-size: 15px;
+    }
+    .support-form {
+        margin-top: 25px;
+    }
+    .support-form .form-group {
+        margin-bottom: 20px;
+    }
+    .support-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+        font-weight: 600;
+    }
+    .support-form input,
+    .support-form select,
+    .support-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #d7dee8;
+        border-radius: 9px;
+        font-size: 15px;
+        font-family: inherit;
+        outline: none;
+    }
+    .support-form input:focus,
+    .support-form select:focus,
+    .support-form textarea:focus {
+        border-color: #1769e0;
+        box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.08);
+    }
+    .support-form textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+    .support-button {
+        width: 100%;
+        border: none;
+        background: #1769e0;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 9px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+    .support-button:hover {
+        background: #1258bf;
+    }
+    .support-security {
+        margin-top: 25px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 10px;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+    .support-back {
+        display: inline-block;
+        margin-top: 25px;
+        color: #1769e0;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    @media (max-width: 600px) {
+        .support-page {
+            padding: 35px 15px;
+        }
+        .support-card {
+            padding: 25px 20px;
+        }
+        .support-header h1 {
+            font-size: 26px;
+        }
+        .support-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a href="{% url 'dashboard' %}"
+           class="logo">
+            My<span>Bank</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+            <a href="{% url 'transfer' %}">
+                Transfer
+            </a>
+            <a href="{% url 'transactions' %}">
+                Transactions
+            </a>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </nav>
+    </div>
+</header>
+<main class="support-page">
+    <div class="support-wrapper">
+        <div class="support-header">
+            <div class="support-icon">
+                💬
+            </div>
+            <h1>
+                {{ system_settings.bank_name }} Support
+            </h1>
+            <p>
+                We're here to help with your account,
+                transfers, verification and other
+                banking-related questions.
+            </p>
+        </div>
+        <div class="support-card">
+            <h2>
+                Contact {{ system_settings.bank_name }} Support
+            </h2>
+            <p>
+                {{ system_settings.support_message }}
+            </p>
+            <div class="support-info">
+                <div class="support-info-box">
+                    <span>
+                        Account Holder
+                    </span>
+                    <strong>
+                        {{ request.user.first_name }}
+                        {{ request.user.last_name }}
+                    </strong>
+                </div>
+                <div class="support-info-box">
+                    <span>
+                        Registered Email
+                    </span>
+                    <strong>
+                        {{ request.user.email }}
+                    </strong>
+                </div>
+                <div class="support-info-box">
+                    <span>
+                        Support Email
+                    </span>
+                    <strong>
+                        {{ system_settings.support_email }}
+                    </strong>
+                </div>
+                <div class="support-info-box">
+                    <span>
+                        Support Phone
+                    </span>
+                    <strong>
+                        {{ system_settings.support_phone }}
+                    </strong>
+                </div>
+            </div>
+            <form method="POST"
+                  class="support-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="subject">
+                        Support Subject
+                    </label>
+                    <select
+                        id="subject"
+                        name="subject"
+                        required>
+                        <option value="">
+                            Select a subject
+                        </option>
+                        <option value="Transfer Verification">
+                            Transfer Verification
+                        </option>
+                        <option value="Account Assistance">
+                            Account Assistance
+                        </option>
+                        <option value="Transfer Issue">
+                            Transfer Issue
+                        </option>
+                        <option value="Login Assistance">
+                            Login Assistance
+                        </option>
+                        <option value="Account Security">
+                            Account Security
+                        </option>
+                        <option value="Other">
+                            Other
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">
+                        Your Message
+                    </label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Please describe how we can assist you..."
+                        required></textarea>
+                </div>
+                <button type="submit"
+                        class="support-button">
+                    Send Support Request
+                </button>
+            </form>
+            <div class="support-security">
+                <strong>
+                    🔒 Security Notice:
+                </strong>
+                Never include your password, PIN,
+                one-time verification code or other
+                confidential security credentials
+                in your support message.
+            </div>
+            <a href="{% url 'dashboard' %}"
+               class="support-back">
+                ← Return to Dashboard
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

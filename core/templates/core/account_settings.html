@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Settings - MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="container navbar-inner">
+
+        <a href="{% url 'dashboard' %}" class="logo">
+            My<span>Bank</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">My Profile</a>
+            <a href="{% url 'statement' %}">Statement</a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
+
+    </div>
+</header>
+
+<main class="main">
+
+    <div class="container">
+
+        <div class="page-title">
+            <h1>Account Settings</h1>
+            <p>Manage your MyBank account preferences and security.</p>
+        </div>
+
+        <div class="card">
+
+            <h2>Account Information</h2>
+
+            <p>
+                <strong>Account Number:</strong>
+                {{ account.account_number }}
+            </p>
+
+            <p>
+                <strong>Account Type:</strong>
+                {{ account.get_account_type_display }}
+            </p>
+
+            <p>
+                <strong>Account Status:</strong>
+                {{ account.get_status_display }}
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Security</h2>
+
+            <p>
+                Keep your account secure by regularly reviewing
+                your password and account access.
+            </p>
+
+            <a href="{% url 'change_password' %}" class="btn auth-button">
+                Change Password
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Profile</h2>
+
+            <p>
+                Review your personal information and registered
+                contact details.
+            </p>
+
+            <a href="{% url 'profile' %}" class="btn auth-button">
+                View My Profile
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

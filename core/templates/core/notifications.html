@@ -1,0 +1,35 @@
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h2>Notifications</h2>
+
+        {% if notifications %}
+
+            {% for notification in notifications %}
+
+                <div class="notification-card">
+
+                    <h3>{{ notification.title }}</h3>
+
+                    <p>{{ notification.message }}</p>
+
+                    <small>
+                        {{ notification.created_at|date:"M d, Y - H:i" }}
+                    </small>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty-message">
+                You don't have any notifications yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>

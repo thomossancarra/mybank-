@@ -1,0 +1,249 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>Support Center | MyBank</title>
+<link rel="stylesheet"
+      href="{% static 'core/style.css' %}">
+<style>
+    .support-center-page {
+        min-height: 80vh;
+        padding: 45px 20px;
+    }
+    .support-center-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .support-center-header {
+        margin-bottom: 30px;
+    }
+    .support-center-header h1 {
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 30px;
+    }
+    .support-center-header p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    .support-center-card {
+        background: white;
+        border: 1px solid #e3e8f0;
+        border-radius: 18px;
+        padding: 25px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+        overflow-x: auto;
+    }
+    .support-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 700px;
+    }
+    .support-table th {
+        text-align: left;
+        padding: 15px;
+        background: #f8fafc;
+        color: #475569;
+        font-size: 13px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .support-table td {
+        padding: 16px 15px;
+        color: #334155;
+        border-bottom: 1px solid #eef2f7;
+        vertical-align: middle;
+    }
+    .support-table tr:last-child td {
+        border-bottom: none;
+    }
+    .reference-number {
+        color: #1769e0;
+        font-weight: 700;
+    }
+    .status-badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #ecfdf5;
+        color: #047857;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .empty-support {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    .empty-support-icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+    .empty-support h2 {
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 21px;
+    }
+    .empty-support p {
+        margin: 0 auto 22px;
+        max-width: 500px;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    .new-request-button {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #1769e0;
+        color: white;
+        text-decoration: none;
+        border-radius: 9px;
+        font-weight: 600;
+    }
+    .support-footer-actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .support-footer-actions a {
+        text-decoration: none;
+        padding: 12px 18px;
+        border-radius: 9px;
+        font-weight: 600;
+    }
+    .dashboard-link {
+        background: #172033;
+        color: white;
+    }
+    .new-support-link {
+        background: #1769e0;
+        color: white;
+    }
+    @media (max-width: 600px) {
+        .support-center-page {
+            padding: 30px 15px;
+        }
+        .support-center-card {
+            padding: 15px;
+        }
+        .support-center-header h1 {
+            font-size: 25px;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a href="{% url 'dashboard' %}"
+           class="logo">
+            My<span>Bank</span>
+        </a>
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+            <a href="{% url 'transfer' %}">
+                Transfer
+            </a>
+            <a href="{% url 'transactions' %}">
+                Transactions
+            </a>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </nav>
+    </div>
+</header>
+<main class="support-center-page">
+    <div class="support-center-wrapper">
+        <div class="support-center-header">
+            <h1>
+                Support Center
+            </h1>
+            <p>
+                View your previous support requests
+                and keep track of your support references.
+            </p>
+        </div>
+        <div class="support-center-card">
+            {% if support_requests %}
+                <table class="support-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Reference
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Date Submitted
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in support_requests %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'support_detail' request.reference_number %}"
+                                       class="reference-number">
+                                        {{ request.reference_number }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ request.subject }}
+                                </td>
+                                <td>
+                                    <span class="status-badge">
+                                        {{ request.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ request.created_at|date:"M d, Y H:i" }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-support">
+                    <div class="empty-support-icon">
+                        💬
+                    </div>
+                    <h2>
+                        No Support Requests
+                    </h2>
+                    <p>
+                        You haven't submitted any support
+                        requests yet. If you need assistance,
+                        our MyBank Support Team is available
+                        to help.
+                    </p>
+                    <a href="{% url 'support' %}"
+                       class="new-request-button">
+                        Contact MyBank Support
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="support-footer-actions">
+            <a href="{% url 'dashboard' %}"
+               class="dashboard-link">
+                ← Dashboard
+            </a>
+            <a href="{% url 'support' %}"
+               class="new-support-link">
+                New Support Request
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

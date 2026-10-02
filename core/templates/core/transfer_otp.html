@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transfer Verification | MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <div class="transfer-otp-container">
+
+        <div class="transfer-otp-card">
+
+            <div class="transfer-otp-icon">
+                🔐
+            </div>
+
+            <h1>Transfer Verification</h1>
+
+            <p class="otp-intro">
+                A 6-digit verification code has been sent to your
+                registered MyBank email address.
+            </p>
+
+            <div class="transfer-summary">
+
+                <p>
+                    <strong>Recipient</strong><br>
+                    {{ recipient_name }}
+                </p>
+
+                <p>
+                    <strong>Account Number</strong><br>
+                    {{ recipient_account_number }}
+                </p>
+
+                <p>
+                    <strong>Transfer Amount</strong><br>
+                    ${{ amount|floatformat:2 }} USD
+                </p>
+
+            </div>
+
+            <form method="POST" action="{% url 'verify_transfer_otp' %}">
+                {% csrf_token %}
+
+                <label for="otp">
+                    Enter Verification Code
+                </label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    maxlength="6"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    placeholder="Enter 6-digit code"
+                    required
+                >
+
+                <button type="submit">
+                    Verify & Complete Transfer
+                </button>
+            </form>
+
+            <p class="otp-security">
+                For your security, never share your verification code
+                with anyone.
+            </p>
+
+            <a href="{% url 'transfer' %}">
+                Cancel Transfer
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

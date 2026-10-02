@@ -1,0 +1,236 @@
+{% load static humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transactions - MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+
+    <style>
+        .transaction-reference {
+            display: block;
+            margin-top: 5px;
+            font-size: 11px;
+            color: #7b8494;
+        }
+
+        .credit-label {
+            color: #16803c;
+            font-weight: 600;
+        }
+
+        .amount-positive {
+            color: #16803c;
+            font-weight: 700;
+        }
+
+        .amount-negative {
+            color: #c0392b;
+            font-weight: 700;
+        }
+
+        .amount-transfer {
+            color: #1769e0;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container navbar-inner">
+
+            <a href="{% url 'dashboard' %}" class="logo">
+                My<span>Bank</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'transfer' %}">
+                    Transfer
+                </a>
+
+                <a href="{% url 'transactions' %}">
+                    Transactions
+                </a>
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">
+                        Logout
+                    </button>
+                </form>
+
+            </nav>
+
+        </div>
+    </header>
+
+
+    <main class="main">
+
+        <div class="container">
+
+            <div class="page-title">
+
+                <h1>
+                    Transaction History
+                </h1>
+
+                <p>
+                    View your recent banking activity.
+                </p>
+
+            </div>
+
+
+            <div class="card balance-card">
+
+                <div class="balance-label">
+                    Current Balance
+                </div>
+
+                <div class="balance">
+                    ${{ account.balance|floatformat:2|intcomma }} USD
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+
+                {% if transactions %}
+
+                    <div class="transaction-table-wrapper">
+
+                        <table class="transaction-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Amount (USD)</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for transaction in transactions %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            {% if transaction.transaction_type == "deposit" %}
+
+                                                <span class="transaction-badge badge-deposit credit-label">
+                                                    Account Credit
+                                                </span>
+
+                                            {% elif transaction.transaction_type == "withdraw" or transaction.transaction_type == "withdrawal" %}
+
+                                                <span class="transaction-badge badge-withdrawal">
+                                                    Withdrawal
+                                                </span>
+
+                                            {% elif transaction.transaction_type == "transfer" %}
+
+                                                <span class="transaction-badge badge-transfer">
+                                                    Transfer
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="transaction-badge">
+                                                    {{ transaction.transaction_type|title }}
+                                                </span>
+
+                                            {% endif %}
+
+                                            {% if transaction.reference %}
+                                                <span class="transaction-reference">
+                                                    Ref: {{ transaction.reference }}
+                                                </span>
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if transaction.transaction_type == "deposit" %}
+
+                                                <span class="amount-positive">
+                                                    +${{ transaction.amount|floatformat:2|intcomma }} USD
+                                                </span>
+
+                                            {% elif transaction.transaction_type == "withdraw" or transaction.transaction_type == "withdrawal" %}
+
+                                                <span class="amount-negative">
+                                                    -${{ transaction.amount|floatformat:2|intcomma }} USD
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="amount-transfer">
+                                                    ${{ transaction.amount|floatformat:2|intcomma }} USD
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+                                            {{ transaction.description|default:"—" }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ transaction.created_at|date:"M d, Y, g:i a" }}
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="message">
+                        You don't have any transactions yet.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

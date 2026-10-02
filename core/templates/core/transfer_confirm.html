@@ -1,0 +1,47 @@
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h2>Confirm Transfer</h2>
+
+        <p>Please review the transfer details before continuing.</p>
+
+        <div class="transfer-details">
+
+            <p>
+                <strong>Recipient:</strong>
+                {{ recipient_name }}
+            </p>
+
+            <p>
+                <strong>Account Number:</strong>
+                {{ recipient_account_number }}
+            </p>
+
+            <p>
+                <strong>Amount:</strong>
+                ${{ amount|floatformat:2 }} USD
+            </p>
+
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="confirm_transfer" value="yes">
+            <input type="hidden" name="account_number" value="{{ recipient_account_number }}">
+            <input type="hidden" name="amount" value="{{ amount }}">
+            <button type="submit" class="btn auth-button">
+                Confirm Transfer
+            </button>
+        </form>
+
+        <br>
+
+        <a href="{% url 'transfer' %}" class="btn">
+            Cancel
+        </a>
+
+    </div>
+
+</div>

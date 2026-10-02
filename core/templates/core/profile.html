@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                My<span>Bank</span>
+            </div>
+
+            <h1>My Profile</h1>
+
+            <p class="auth-subtitle">
+                Your personal and account information.
+            </p>
+
+            {% if account.profile_photo %}
+                <div style="text-align:center; margin-bottom:25px;">
+                    <img
+                        src="{{ account.profile_photo.url }}"
+                        alt="Profile Photo"
+                        class="profile-photo"
+                    >
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>First Name</label>
+                <div>{{ account.user.first_name }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Middle Name</label>
+                <div>{{ account.middle_name }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Surname</label>
+                <div>{{ account.user.last_name }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <div>{{ account.user.email }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <div>{{ account.phone_number }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Country</label>
+                <div>{{ account.country }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>State / Province / Region</label>
+                <div>{{ account.state }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Residential Address</label>
+                <div>{{ account.address }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Account Number</label>
+                <div>{{ account.account_number }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Account Type</label>
+                <div>{{ account.get_account_type_display }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Account Status</label>
+                <div>{{ account.get_status_display }}</div>
+            </div>
+
+            <a href="{% url 'dashboard' %}" class="btn auth-button">
+                Back to Dashboard
+            </a>
+
+            <a href="{% url 'change_password' %}" class="btn auth-button">
+                Change Password
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

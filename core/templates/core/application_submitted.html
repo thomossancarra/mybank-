@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Application Submitted - MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                My<span>Bank</span>
+            </div>
+
+            <div class="status-icon">
+                ✓
+            </div>
+
+            <h1>Application Submitted</h1>
+
+            <p class="auth-subtitle">
+                Thank you for choosing MyBank International Finance.
+            </p>
+
+            <div class="application-message">
+
+                <p>
+                    Your account application has been successfully
+                    submitted to our account administration team.
+                </p>
+
+                <p>
+                    Your application is currently
+                    <strong>awaiting approval</strong>.
+                </p>
+
+                <div class="application-status">
+                    <span>Status</span>
+                    <strong>Pending Approval</strong>
+                </div>
+
+                <div class="application-status">
+                    <span>Account Number</span>
+                    <strong>{{ account_number }}</strong>
+                </div>
+
+                <p>
+                    Your account will remain inactive until your
+                    application has been reviewed and approved.
+                </p>
+
+                <p>
+                    Once your account is approved, we will send a
+                    confirmation email to your registered email address
+                    with instructions for accessing your MyBank account.
+                </p>
+
+            </div>
+
+            <a href="{% url 'login' %}" class="btn auth-button">
+                Return to Login
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

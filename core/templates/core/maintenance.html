@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ settings.bank_name }} - Maintenance</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+    <div class="maintenance-page">
+
+        <div class="maintenance-card">
+
+            <div class="maintenance-icon">
+                ⚙️
+            </div>
+
+            <h1>{{ settings.bank_name }}</h1>
+
+            <h2>We're currently performing maintenance</h2>
+
+            <p>
+                {{ settings.maintenance_message }}
+            </p>
+
+            <p class="maintenance-support">
+                If you need assistance, please contact
+                <strong>{{ settings.support_email }}</strong>.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% load static humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Statement - MyBank</title>
+
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="container navbar-inner">
+
+        <a href="{% url 'dashboard' %}" class="logo">
+            My<span>Bank</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">My Profile</a>
+            <a href="{% url 'transactions' %}">Transactions</a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
+
+    </div>
+</header>
+
+
+<main class="main">
+    <div class="container">
+
+        <div class="page-title">
+            <h1>Account Statement</h1>
+            <p>Your MyBank transaction statement.</p>
+        </div>
+
+        <a href="{% url 'download_statement' %}" class="btn auth-button">
+            Download PDF Statement
+        </a>
+
+
+        <div class="card">
+
+            <h2>Account Information</h2>
+
+            <p>
+                <strong>Account Number:</strong>
+                {{ account.account_number }}
+            </p>
+
+            <p>
+                <strong>Account Type:</strong>
+                {{ account.get_account_type_display }}
+            </p>
+
+            <p>
+                <strong>Account Holder:</strong>
+                {{ account.user.first_name }}
+                {{ account.middle_name }}
+                {{ account.user.last_name }}
+            </p>
+
+            <p>
+                <strong>Current Balance:</strong>
+                ${{ account.balance|floatformat:2|intcomma }} USD
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>Transaction History</h2>
+
+            {% if transactions %}
+
+                {% for transaction in transactions %}
+
+                    <div class="transaction-row">
+
+                        <div>
+                            <strong>
+                                {{ transaction.get_transaction_type_display }}
+                            </strong>
+
+                            <p>
+                                {{ transaction.description }}
+                            </p>
+
+                            <small>
+                                {{ transaction.created_at|date:"M d, Y - H:i" }}
+                            </small>
+                        </div>
+
+                        <div>
+                            ${{ transaction.amount|floatformat:2|intcomma }} USD
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No transactions found.</p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

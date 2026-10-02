@@ -1,0 +1,409 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Support Request - MyBank</title>
+
+<link rel="stylesheet"
+      href="{% static 'core/style.css' %}">
+
+<style>
+    .support-detail-page {
+        min-height: 80vh;
+        padding: 45px 20px;
+    }
+
+    .support-detail-wrapper {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    .support-detail-header {
+        margin-bottom: 25px;
+    }
+
+    .support-detail-header h1 {
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 30px;
+    }
+
+    .support-detail-header p {
+        margin: 0;
+        color: #64748b;
+    }
+
+    .ticket-card {
+        background: white;
+        border: 1px solid #e3e8f0;
+        border-radius: 18px;
+        padding: 25px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .ticket-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .ticket-reference {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .ticket-subject {
+        margin: 0;
+        color: #172033;
+        font-size: 21px;
+    }
+
+    .ticket-status {
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: #eef4ff;
+        color: #1769e0;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .original-message {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 25px;
+    }
+
+    .original-message-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .original-message p {
+        margin: 0;
+        color: #172033;
+        line-height: 1.7;
+        white-space: pre-wrap;
+    }
+
+    .conversation-title {
+        color: #172033;
+        font-size: 19px;
+        margin: 0 0 15px;
+    }
+
+    .message {
+        border-radius: 14px;
+        padding: 15px 17px;
+        margin-bottom: 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    .message.staff-message {
+        background: #eef4ff;
+        border-color: #dbe8ff;
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 7px;
+    }
+
+    .message-sender {
+        font-weight: 600;
+        color: #172033;
+        font-size: 14px;
+    }
+
+    .message-date {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .message-body {
+        color: #334155;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+
+    .reply-form {
+        margin-top: 25px;
+    }
+
+    .reply-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+        font-weight: 600;
+    }
+
+    .reply-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 130px;
+        padding: 13px 14px;
+        border: 1px solid #d7dee8;
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: inherit;
+        resize: vertical;
+        outline: none;
+    }
+
+    .reply-form textarea:focus {
+        border-color: #1769e0;
+        box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.08);
+    }
+
+    .reply-button {
+        width: 100%;
+        margin-top: 12px;
+        border: none;
+        background: #1769e0;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 9px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .reply-button:hover {
+        background: #1258bf;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 5px;
+        color: #1769e0;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .error-message {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+        padding: 12px 15px;
+        border-radius: 9px;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 600px) {
+        .support-detail-page {
+            padding: 30px 15px;
+        }
+
+        .ticket-card {
+            padding: 20px;
+        }
+
+        .ticket-top {
+            flex-direction: column;
+        }
+
+        .ticket-status {
+            align-self: flex-start;
+        }
+
+        .message-header {
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="container navbar-inner">
+
+        <a href="{% url 'dashboard' %}"
+           class="logo">
+            My<span>Bank</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'support_center' %}">
+                Support Center
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+</header>
+
+
+<main class="support-detail-page">
+
+    <div class="support-detail-wrapper">
+
+        <div class="support-detail-header">
+
+            <h1>
+                Support Request
+            </h1>
+
+            <p>
+                View your request and communicate with the
+                MyBank Support Team.
+            </p>
+
+        </div>
+
+
+        <div class="ticket-card">
+
+            <div class="ticket-top">
+
+                <div>
+
+                    <div class="ticket-reference">
+                        Reference:
+                        {{ support_request.reference_number }}
+                    </div>
+
+                    <h2 class="ticket-subject">
+                        {{ support_request.subject }}
+                    </h2>
+
+                </div>
+
+                <div class="ticket-status">
+                    {{ support_request.status }}
+                </div>
+
+            </div>
+
+
+            <div class="original-message">
+
+                <div class="original-message-label">
+                    Original Request
+                </div>
+
+                <p>
+{{ support_request.message }}
+                </p>
+
+            </div>
+
+
+            <h3 class="conversation-title">
+                Conversation
+            </h3>
+
+
+            {% for message in support_messages %}
+
+                <div class="message
+                    {% if message.sender.is_staff %}
+                        staff-message
+                    {% endif %}">
+
+                    <div class="message-header">
+
+                        <div class="message-sender">
+
+                            {% if message.sender.is_staff %}
+                                MyBank Support Team
+                            {% else %}
+                                You
+                            {% endif %}
+
+                        </div>
+
+                        <div class="message-date">
+                            {{ message.created_at|date:"M d, Y - H:i" }}
+                        </div>
+
+                    </div>
+
+                    <div class="message-body">
+{{ message.message }}
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p style="color:#64748b;">
+                    No additional messages yet.
+                </p>
+
+            {% endfor %}
+
+
+            {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+
+            {% if support_request.status != "Closed" %}
+
+                <form method="POST"
+                      class="reply-form">
+
+                    {% csrf_token %}
+
+                    <label for="message">
+                        Reply to Support
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Write your reply..."
+                        required></textarea>
+
+                    <button type="submit"
+                            class="reply-button">
+                        Send Reply
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+
+        <a href="{% url 'support_center' %}"
+           class="back-link">
+            ← Back to Support Center
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

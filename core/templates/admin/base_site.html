@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        MyBank Administration
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+<div style="
+    padding: 10px 20px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+">
+
+    <a href="{% url 'system_overview' %}"
+       style="
+           font-weight: 600;
+           text-decoration: none;
+       ">
+        📊 System Overview
+    </a>
+
+</div>
+{% endblock %}
