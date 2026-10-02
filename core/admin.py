@@ -18,9 +18,6 @@ from .models import (
 
 
 # Create the MyBank Support Team group
-Group.objects.get_or_create(
-    name="Support Team"
-)
 
 
 class FundAccountForm(forms.Form):
