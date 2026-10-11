@@ -321,7 +321,16 @@
         <div class="container">
 
             <div class="page-title">
-                <h1>{% trans "Welcome," %} {{ user.username }} 👋</h1>
+                <h1>
+                    {% trans "Welcome," %}
+                    {% if user.first_name %}
+                        {{ user.first_name }}
+                        {% if user.last_name %}{{ user.last_name }}{% endif %}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                    👋
+                </h1>
                 <p>{% trans "Your MyBank account dashboard." %}</p>
             </div>
 
