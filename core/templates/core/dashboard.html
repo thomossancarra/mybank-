@@ -372,9 +372,13 @@
     •••••••••
 </div>
 
-                <div class="balance-label">{% trans "Username" %}</div>
+                <div class="balance-label">{% trans "Account Holder" %}</div>
                 <div class="balance">
-                    {{ account.user.username }}
+                    {% if account.user.first_name or account.user.last_name %}
+                        {{ account.user.first_name }} {{ account.user.last_name }}
+                    {% else %}
+                        {{ account.user.username }}
+                     {% endif %}
                 </div>
 
                <div class="balance-label sensitive-label">
