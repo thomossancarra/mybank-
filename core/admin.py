@@ -2,9 +2,15 @@ from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from django.urls import reverse
+from django.utils.html import format_html
 from django import forms
 from django.utils import timezone
 import uuid
+import logging
+logger = logging.getLogger(__name__)
 
 from .models import (
     Account,
@@ -186,56 +192,117 @@ Secure Online Banking
     )
 
 
+
 @admin.action(description="Approve selected accounts")
-def approve_accounts(modeladmin, request, queryset) :
-    for account in queryset:
+def approve_accounts(modeladmin, request, queryset):
+    approved_count = 0
+    email_sent_count = 0
+    email_failed_count = 0
+    activity_failed_count = 0
+
+    login_url = request.build_absolute_uri(reverse("login"))
+
+    for account in queryset.select_related("user"):
+        # Approve the account first.
         account.status = "approved"
-        account.save()
+        account.save(update_fields=["status"])
+        approved_count += 1
 
-        AdminActivity.objects.create(
-            admin_user=request.user,
-            action="Account Approved",
-            details=(
-                f"Approved account {account.account_number} "
-                f"for {account.user.username}."
-            ),
+        # Record the approval without allowing a logging failure
+        # to interrupt the rest of the approval process.
+        try:
+            AdminActivity.objects.create(
+                admin_user=request.user,
+                action="Account Approved",
+                details=(
+                    f"Approved account {account.account_number} "
+                    f"for {account.user.username}."
+                ),
+            )
+        except Exception:
+            activity_failed_count += 1
+            logger.exception(
+                "Failed to record approval activity for account %s",
+                account.account_number,
+            )
+
+        # A welcome email cannot be sent without a recipient address.
+        if not account.user.email:
+            email_failed_count += 1
+            logger.warning(
+                "No email address is registered for account %s",
+                account.account_number,
+            )
+            continue
+
+        message = (
+            f"Dear {account.user.first_name or account.user.username},\n\n"
+            "Welcome to MyBank International Finance.\n\n"
+            "We are pleased to inform you that your account application "
+            "has been reviewed and approved.\n\n"
+            f"Account Number: {account.account_number}\n\n"
+            "You can access your account using your account number "
+            "and the password you created during registration.\n\n"
+            f"Login: {login_url}\n\n"
+            "Please keep your account information secure and never "
+            "share your password with anyone.\n\n"
+            "Thank you for choosing MyBank International Finance.\n\n"
+            "Kind regards,\n"
+            "MyBank International Finance\n"
+            "Account Administration"
         )
 
-        send_mail(
-            subject="Welcome to MyBank International Finance",
-            message=f"""
-Dear {account.user.first_name or account.user.username},
+        try:
+            result = send_mail(
+                subject="Welcome to MyBank International Finance",
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[account.user.email],
+                fail_silently=False,
+            )
 
-Welcome to MyBank International Finance.
+            if result == 1:
+                email_sent_count += 1
+            else:
+                email_failed_count += 1
+                logger.error(
+                    "Welcome email was not accepted for account %s",
+                    account.account_number,
+                )
 
-We are pleased to inform you that your account application has been
-reviewed and approved.
+        except Exception:
+            email_failed_count += 1
+            logger.exception(
+                "Failed to send welcome email for account %s",
+                account.account_number,
+            )
 
-Your MyBank account is now officially activated.
-
-Account Number: {account.account_number}
-
-You can access your account using your account number and the password
-you created during registration.
-
-Login:
-http://127.0.0.1:8001/login/
-
-Please keep your account information secure and do not share your
-password with anyone.
-
-Thank you for choosing MyBank International Finance.
-
-Kind regards,
-MyBank International Finance
-Account Administration
-""",
-            from_email="noreply@mybank.com",
-            recipient_list=[account.user.email],
-            fail_silently=False,
+    if approved_count:
+        messages.success(
+            request,
+            f"{approved_count} account(s) approved successfully.",
         )
 
+    if email_sent_count:
+        messages.success(
+            request,
+            f"Email server accepted {email_sent_count} welcome email(s) "
+            "for sending.",
+        )
 
+    if email_failed_count:
+        messages.warning(
+            request,
+            f"Welcome email failed for {email_failed_count} account(s). "
+            "Check the Render logs for details.",
+        )
+
+    if activity_failed_count:
+        messages.warning(
+            request,
+            f"Approval activity could not be recorded for "
+            f"{activity_failed_count} account(s). Check the Render logs.",
+        )
 @admin.action(description="Reject selected accounts")
 def reject_accounts(modeladmin, request, queryset):
     queryset.update(status="rejected")
